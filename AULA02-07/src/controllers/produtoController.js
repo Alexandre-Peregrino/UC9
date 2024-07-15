@@ -18,7 +18,38 @@ const ProdutoController = {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
-    }
+    },
+    async atualizarProduto(req, res) {
+        try {
+            const { id } = req.params;
+            const [update] = await Produto.update(req.body, {
+                where: { id }
+            });
+            if (update) {
+                const updateProduto = await Produto.findOne({ where: { id } });
+                res.status(200).json(updateProduto);
+            } else {
+                res.status(404).json({ error: "Produto não encontrado" });
+            }
+        } catch (error) {
+            res.status(500).json({ error: "Erro ao atualizar Produto." });
+        }
+    },
+    async deletarProduto(req, res) {
+        try {
+            const { id } = req.params;
+            const [update] = await Produto.destroy({
+                where: { id }
+            });
+            if (deleted) {
+                res.status(204).json();
+            } else {
+                res.status(404).json({ error: "Produto não encontrado" });
+            }
+        } catch (error) {
+            res.status(500).json({ error: "Erro ao excluir Produto." });
+        }
+    },
 
 }
 
